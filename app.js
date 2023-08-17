@@ -1,24 +1,28 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
+const cors = require('cors');
 
 const app = express();
+
+app.use(cors({
+    origin: '*',
+    credentials: true
+}))
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static('public'));
 const router = require('./routes/routes');
 
-const db = mysql.createConnection({
-  host:         process.env.DB_HOST,
-  user:         process.env.DB_USER,
-  password:     process.env.DB_PASSWORD,
-  database:     process.env.DB_NAME
-});
+const pool = mysql.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    connectionLimit: 10 
+  });
 
-db.connect((err) => {
-  if (err) throw err;
-  console.log('Connected to the database');
-});
 
 app.use('/',router);
 
