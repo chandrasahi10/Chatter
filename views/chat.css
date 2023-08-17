@@ -1,0 +1,117 @@
+body {
+  font-family: 'Helvetica Neue', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f8ff;
+  color: #333;
+}
+
+.chat-container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 300px;
+  background-color: #1E90FF;
+  padding: 20px;
+  box-shadow: 1px 0px 5px rgba(0, 0, 0, 0.1);
+  color: white;
+}
+
+.user-section h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #fff;
+}
+
+.groups-section h3,
+.active-users-section h3 {
+  margin: 10px 0;
+  font-size: 18px;
+  color: #fff;
+}
+
+.group-list,
+.user-list {
+  list-style: none;
+  padding: 0;
+}
+
+.group-list li,
+.user-list li {
+  margin: 5px 0;
+  cursor: pointer;
+  font-size: 16px;
+  color: #fff;
+  opacity: 0.9;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.group-list li:hover,
+.user-list li:hover {
+  opacity: 1;
+}
+
+.chat-section {
+  flex-grow: 1;
+  background-color: #ffffff;
+  padding: 20px;
+  box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+#logoutButton {
+  display: block;
+  margin-top: 10px;
+  background-color: #ff5555;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+#logoutButton:hover {
+  background-color: #ff3333;
+}
+
+/* ... Previous CSS content ... */
+
+.messages {
+  max-height: 80%;
+  overflow-y: scroll;
+  margin-bottom: 10px;
+}
+
+.message-box {
+  display: flex;
+  align-items: center;
+}
+
+#messageInput {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+#sendButton {
+  background-color: #1E90FF;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+#sendButton:hover {
+  background-color: #0066CC;
+}
+
+#imageInput {
+  display: none;
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Window</title>
+  <link rel="stylesheet" href="chat.css">
+</head>
+<body>
+  <div class="chat-container">
+    <div class="sidebar">
+      <div class="user-section">
+        <h2>Welcome, John Doe</h2>
+        <button id="logoutButton">Logout</button>
+      </div>
+      <div class="groups-section">
+        <h3>Groups</h3>
+        <ul class="group-list">
+          <li>Group 1</li>
+          <li>Group 2</li>
+          <li>Group 3</li>
+        </ul>
+      </div>
+      <div class="active-users-section">
+        <h3>Active Users</h3>
+        <ul class="user-list">
+          <li>User 1</li>
+          <li>User 2</li>
+          <li>User 3</li>
+        </ul>
+      </div>
+    </div>
+    <div class="chat-section">
+        <div class="messages">
+          <!-- Chat messages will be displayed here -->
+        </div>
+        <div class="message-box">
+          <textarea id="messageInput" placeholder="Type your message"></textarea>
+          <input type="file" id="imageInput">
+          <button id="sendButton">Send</button>
+        </div>
+      </div>
+  </div>
+  <script src="chat.js"></script>
+</body>
+</html>
