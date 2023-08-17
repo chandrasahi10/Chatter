@@ -1,6 +1,7 @@
 const mysql = require('mysql2/promise');
 const path = require('path');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const pool = mysql.createPool({
@@ -11,13 +12,17 @@ const pool = mysql.createPool({
     connectionLimit: 10 
   });
 
-exports.viewSignUp = (req,res) =>{
+exports.viewSignUp = async (req,res) =>{
     res.sendFile(path.join(__dirname,'../','views','signup.html'));
 }
 
-exports.viewLogin = (req,res) => {
+
+
+
+exports.viewLogin = async (req,res) => {
     res.sendFile(path.join(__dirname,'../','views','login.html'))
 }
+
 
 
 exports.signup = async (req, res) => {
@@ -57,3 +62,46 @@ exports.signup = async (req, res) => {
     }
   };
   
+  
+const JWT_SECRET = process.env.TOKEN_SECRET;
+
+
+exports.login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const selectSql = 'SELECT id, password FROM users WHERE email = ?';
+    const [userRows] = await pool.query(selectSql, [email]);
+    const user = userRows[0];
+
+    if (!user) {
+      const script = `
+        <script>
+          alert('User not found');
+          window.location.href = '/login';
+        </script>`;
+      return res.send(script);
+    }
+
+    
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      const script = `
+        <script>
+          alert('User not authorized');
+          window.location.href = '/login';
+        </script>`;
+      return res.send(script);
+    }
+
+    
+    const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
+
+    
+    res.status(200).send(token);
+  } catch (err) {
+    console.error('Error during login:', err);
+    res.status(500).send('Internal Server Error');
+  }
+};

@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2/promise');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
+
 
 const app = express();
 
