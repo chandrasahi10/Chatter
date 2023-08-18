@@ -233,7 +233,7 @@ const authAxios = axios.create({
   const groupId = localStorage.getItem("groupId");
 
   if (localStorage.getItem("groupId") != null) {
-    // setInterval(() => {
+    setInterval(() => {
     authAxios
       .get(`/get-chats?id=${lastId}&gId=${groupId}`)
       .then((response) => {
@@ -255,7 +255,7 @@ const authAxios = axios.create({
         });
       })
       .catch((err) => console.log(err.response));
-    // }, 1000)
+    }, 1000)
   }
 
   function sendGroupMsg(event) {
