@@ -137,7 +137,7 @@ exports.makeAdmin=async(req,res)=>{
     try{
         const {email, groupId}= req.body;
         const user= await User.findOne({where:{email:email}});
-        await await UserGroup.update({isAdmin:true},{where:{userId:user.id,groupId:groupId}});
+        await UserGroup.update({isAdmin:true},{where:{userId:user.id,groupId:groupId}});
         res.status(200).json({message:"user is now admin"})
     }
     catch(err){

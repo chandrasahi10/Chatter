@@ -258,51 +258,87 @@ const authAxios = axios.create({
     }, 1000)
   }
 
-  function sendGroupMsg(event) {
-    event.preventDefault();
 
-    if (localStorage.getItem("groupId") == null) {
-      alert("Select a group first");
-      document.getElementById("group-chat-input").value = "";
-    } else {
-      const input = document.getElementById("group-chat-input").value;
-      const obj = {
-        message: input,
-        name: name,
-        groupId: localStorage.getItem("groupId"),
-      };
-      console.log(obj);
-      authAxios
-        .post("/post-chat", obj)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
-      document.getElementById("group-chat-input").value = "";
-      document.getElementById("group-chat-receive-box").innerHTML += `
-                <div><span style="color:green;"><b>${name}:</b></span><span>${input}</span></div>`;
-    }
+
+  function sendFile(event) {
+    event.preventDefault();
+    const fileInput = document.getElementById("file-upload");
+    const formData = new FormData();
+    // console.log(fileInput.files);
+    formData.append("image", fileInput.files[0]);
+    // console.log(formData)
+  
+    authAxios
+      .post("/upload", formData)
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          const fileUrl = res.data.fileURL;
+          const downloadLink = `<a href="${fileUrl}"download>Download file</a>`;
+          const obj = {
+          message: downloadLink, // Send the download link for the image
+          name: name,
+          groupId: localStorage.getItem("groupId"),
+        };
+  
+          authAxios
+          .post("/post-chat", obj)
+          .then((res) => console.log(res))
+          .catch((err) => console.log(err));
+
+         
+          const div = document.getElementById("group-chat-receive-box");
+          div.innerHTML += `
+            <div>
+              <span style="color:green;"><b>${name}:</b></span>
+              <span>${downloadLink}</span>
+            </div>`;
+  
+          // Clear the input and scroll to the bottom
+          fileInput.value = "";
+          div.scrollTop = div.scrollHeight;
+        }
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  }
+  
+
+
+
+  
+function sendGroupMsg(event) {
+  event.preventDefault();
+
+  if (localStorage.getItem("groupId") == null) {
+    alert("Select a group first");
+    document.getElementById("group-chat-input").value = "";
+  } else {
+    const input = document.getElementById("group-chat-input").value;
+    const obj = {
+      message: input,
+      name: name,
+      groupId: localStorage.getItem("groupId"),
+    };
+
+    authAxios
+      .post("/post-chat", obj)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+
+    // Display the sent message or image in the chat box
+    const div = document.getElementById("group-chat-receive-box");
+    const chatMessageDiv = document.createElement("div");
+    chatMessageDiv.innerHTML = `
+      <span style="color:green;"><b>${name}:</b></span><span>${input}</span>`;
+    div.appendChild(chatMessageDiv);
+
+    // Clear the input and scroll to the bottom
+    document.getElementById("group-chat-input").value = "";
+    div.scrollTop = div.scrollHeight;
   }
 }
 
-function sendFile(event) {
-  event.preventDefault();
-  const fileInput = document.getElementById("file-upload");
-  const formData = new FormData();
-  // console.log(fileInput.files);
-  formData.append("image", fileInput.files[0]);
-  // console.log(formData)
-
-  authAxios
-    .post("/upload", formData)
-    .then((res) => {
-      console.log(res);
-      if (res.status === 200) {
-        let a = document.createElement("a");
-        a.href = res.data.fileURL;
-        a.download = "file";
-        a.click();
-      }
-    })
-    .catch((err) => {
-      console.log(err.response);
-    });
 }
+

@@ -31,7 +31,7 @@ exports.getChats = async (req, res) => {
 exports.uploadFile= async(req, res)=>{
     try{
         console.log(req.file)
-        const filename= `user-${req.user.id}/${req.file.filename}_${new Date()}.png`;
+        const filename= `user-${req.user.id}_${req.file.filename}_${new Date()}.png`;
         // console.log(filename)
         const fileURL= await S3Service.uploadToS3(req.file.path, filename);
         res.status(200).json({success: true, fileURL});
